@@ -1,0 +1,12 @@
+#!/bin/sh
+# url
+url=`git config --get remote.origin.url`
+url=${url/git@/http:\/\/}
+url=${url//:/\/}
+url=${url/\/\/\//:}
+url=${url/\.git/\/}
+url="${url}merge_requests/new?merge_request%5Btarget_branch%5D=master&merge_request%5Bsource_branch%5D=$(git rev-parse --abbrev-ref HEAD)"
+url=${url//\#/\%23}
+
+# open
+open -a "Google Chrome" $url
