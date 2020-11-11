@@ -1,2 +1,3 @@
 #!/bin/sh
-git push --set-upstream origin $(git rev-parse --abbrev-ref HEAD)
+origin=`git config --get branch.master.remote`
+git push --set-upstream $origin $(git rev-parse --abbrev-ref HEAD)
