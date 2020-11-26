@@ -1,0 +1,4 @@
+#!/bin/sh
+git fetch -p
+origin=`git config --get branch.master.remote`
+git branch --remote --merged $origin/master | grep -E 'hotfix|feature' | cut -b 10- | xargs git push --delete $origin

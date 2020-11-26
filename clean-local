@@ -1,0 +1,4 @@
+#!/bin/sh
+git checkout master
+git pull
+git branch --merged master | grep -E 'hotfix|feature' | xargs git branch -d
