@@ -7,7 +7,8 @@ url=${url/git@/http:\/\/}
 url=${url//:/\/}
 url=${url/\/\/\//:}
 url=${url/\.git/\/}
-url="${url}merge_requests/new?merge_request[target_branch]=master&merge_request[source_branch]=$(git rev-parse --abbrev-ref HEAD)"
+source_branch=$(echo $(git rev-parse --abbrev-ref HEAD) | tr -d '\n' | xxd -plain | sed 's/\(..\)/%\1/g')
+url="${url}merge_requests/new?merge_request[target_branch]=master&merge_request[source_branch]=${source_branch}"
 
 # open
 open -a "Google Chrome" $url
