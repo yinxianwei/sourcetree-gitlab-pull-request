@@ -3,12 +3,15 @@
 # url
 origin=`git config --get branch.master.remote`
 url=`git config --get remote.${origin}.url`
-url=${url/git@/http:\/\/}
-url=${url//:/\/}
-url=${url/\/\/\//:}
-url=${url/\.git/\/}
-source_branch=$(echo $(git rev-parse --abbrev-ref HEAD) | tr -d '\n' | xxd -plain | sed 's/\(..\)/%\1/g')
-url="${url}merge_requests/new?merge_request[target_branch]=master&merge_request[source_branch]=${source_branch}"
+target_branch="master"
 
+url=${url/://}
+url=${url/.git//}
+url=${url/git@/http://}
+
+source_branch=$(git rev-parse --abbrev-ref HEAD)
+source_branch=$(echo $source_branch | xxd -p | tr -d \\n | sed 's/../%&/g')
+
+url="${url}merge_requests/new?merge_request[target_branch]=${target_branch}&merge_request[source_branch]=${source_branch}"
 # open
 open -a "Google Chrome" $url
