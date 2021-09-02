@@ -9,8 +9,20 @@ url=${url/://}
 url=${url/.git//}
 url=${url/git@/http://}
 
+# https://gist.github.com/cdown/1163649
+urlencode() {
+    local length="${#1}"
+    for ((i = 0; i < length; i++)); do
+        local c="${1:i:1}"
+        case $c in
+        [a-zA-Z0-9.~_-]) printf "$c" ;;
+        *) printf "$c" | xxd -p -c1 | while read x; do printf "%%%s" "$x"; done ;;
+        esac
+    done
+}
+
 source_branch=$(git rev-parse --abbrev-ref HEAD)
-source_branch=$(echo $source_branch | xxd -p | tr -d \\n | sed 's/../%&/g')
+source_branch=$(urlencode $source_branch)
 
 url="${url}merge_requests/new?merge_request[target_branch]=${target_branch}&merge_request[source_branch]=${source_branch}"
 # open
