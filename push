@@ -1,3 +1,5 @@
 #!/bin/sh
 origin=`git config --get branch.master.remote`
-git push --set-upstream $origin $(git rev-parse --abbrev-ref HEAD)
+branch=`git rev-parse --symbolic-full-name HEAD`
+branch=${branch/refs\/heads\/}
+git push --set-upstream $origin $branch
